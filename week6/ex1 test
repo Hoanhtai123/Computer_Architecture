@@ -1,0 +1,63 @@
+.data
+out_string: .ascii "\n result: \n"
+msg_simple: .asciiz     "simple sum is: "
+msg_nl:     .asciiz     "\n"
+list: .word 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+size: .word 10
+.text:
+main:
+    lw	    $s0,size
+    la 	    $s1,list	
+    subi    $s2, $s0, 1 	
+    jal     sumsimple              
+    la      $a0,msg_simple
+    move    $a1,$v0
+    jal     showsum
+    li      $a0,0                   
+    jal     sumrecurs1             
+    move    $s4,$v0                 
+    li      $v0,10
+    syscall
+sumsimple:
+    move    $t0,$s0                 
+    move    $t1,$s1                 
+    li      $v0,0                   
+    j       sumsimple_test
+sumsimple_loop:
+    lw      $t2,0($t1)              
+    add     $v0,$v0,$t2            
+    addi    $t1,$t1,4               
+    subi    $t0,$t0,1               
+sumsimple_test:
+    bgtz    $t0,sumsimple_loop      
+    jr      $ra                     
+sumrecurs1:
+    subiu   $sp,$sp,8
+    sw      $ra,0($sp)
+    sw      $a0,4($sp)
+    blt     $a0,$s2,sumrecurs1_call 
+    li      $v0,0                   
+    j       sumrecurs1_done         
+sumrecurs1_call:
+    addi    $a0,$a0,1               
+    jal     sumrecurs1              
+    lw      $a0,4($sp)
+sumrecurs1_done:
+    sll     $t2,$a0,2               
+    add     $t2,$s1,$t2             
+    lw      $t2,0($t2)              
+    add     $v0,$t2,$v0             
+    lw      $ra,0($sp)
+    lw      $a0,4($sp)
+    addiu   $sp,$sp,8
+    jr      $ra
+showsum:
+    li      $v0,4                   
+    syscall
+    move    $a0,$a1                
+    li      $v0,1                   
+    syscall
+    la      $a0,msg_nl
+    li      $v0,4                   
+    syscall
+    jr      $ra

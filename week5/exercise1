@@ -1,0 +1,21 @@
+.data
+out_string: .asciiz "\n Please input an integer: \n"
+output: .asciiz "result: \n"
+.text
+input_proccess:
+li $v0,4
+la $a0, out_string
+syscall 
+li $v0,5
+syscall
+move $t0,$v0
+add $t1,$t1,$t0
+#blt $t0,$zero,print_out
+bgtz $t0,input_proccess
+#print_out:
+li $v0,4
+la $a0, output
+syscall 
+li $v0,1
+add $a0,$t1,$zero
+syscall 

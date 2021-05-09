@@ -1,0 +1,47 @@
+.data
+out_string: .asciiz "\n Please input an integer: \n"
+out_string2: .asciiz "\n position of the integer: \n"
+out_string3: .asciiz "\n The integer did not exist \n"
+list: .word 2, 3, 5, 7, 11, 13, 17, 19, 13, 29
+size: .word 10
+.text
+li $v0,4
+la $a0, out_string
+syscall 
+input_proccess:
+li $v0,5
+syscall
+move $t0,$v0
+lw $t3, size
+la $t1, list # get array address
+li $t2, 0 # set loop counter
+cal_loop:
+beq $t2,$t3,exit
+lw $t5,($t1)
+beq $t5,$t0,print_pos
+addi $t2, $t2, 1 # advance loop counter
+addi $t1, $t1, 4 # advance array pointer
+j cal_loop
+
+print_pos:
+add $t4,$zero,$zero
+addi $t4,$t4,1
+li $v0,4
+la $a0, out_string2
+syscall 
+add $a0,$t2,$zero
+li $v0,1
+syscall
+addi $t2, $t2, 1 # advance loop counter
+addi $t1, $t1, 4 
+j cal_loop
+print_loop_end:
+li $v0,4
+la $a0, out_string3
+syscall 
+li $v0,10
+syscall
+exit:
+beqz $t4,print_loop_end
+li $v0,10
+syscall

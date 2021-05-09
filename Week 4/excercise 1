@@ -1,0 +1,12 @@
+.data
+array1: .word 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+size: .word 10
+.text
+main:
+    li $v0,1
+    la $s3,array1
+    lw $t0,40($a3)        #access 1st element of word array or array[0]
+    syscall
+    
+loop:
+bne 

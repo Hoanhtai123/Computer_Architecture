@@ -1,0 +1,29 @@
+.data
+out_string1: .asciiz "Please input an integer: \n"
+out_string: .asciiz "result: \n"
+list: .word 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+size: .word 10
+.text
+main:
+lw $t3, size
+la $t1, list 
+li $t2, 0
+input:
+li $v0,4
+la $a0, out_string1
+syscall 
+li $v0,5
+syscall
+add $t4,$zero,$v0
+mul $t4,$t4,4
+add $t1,$t1,$t4
+
+out_put:
+li $v0,4
+la $a0, out_string
+syscall 
+lw $a0,($t1)
+li $v0,1
+syscall
+li $v0,10
+syscall

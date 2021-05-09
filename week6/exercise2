@@ -1,0 +1,57 @@
+.data
+array: .word 1 45 10 72 94 10 17 22 28 40
+myarr: .asciiz "1 45 10 72 94 10 17 22 28 40\n"
+out: .asciiz "Maximum element: "
+size: .word 10
+.text 
+main: 
+	la $s1, array	
+	lw $s0, size			
+	add $t0, $zero, $s0	
+	li $t5, 0  
+	lw $t5, 0($s1)
+	la $a0, myarr
+	li $v0, 4 
+	syscall
+	li $v0, 4 
+	la $a0, out
+	syscall
+	jal maximum
+	blt $t2, $t5, fact1	
+	sub $t5, $t5, $t5	
+	add $t5, $0, $t2
+	add $a0, $0, $t5
+	li $v0, 1
+	syscall
+	li $v0, 10 
+	syscall
+fact1:	
+	add $a0, $0, $t5
+	li $v0, 1
+	syscall		
+	li $v0, 10 
+	syscall
+maximum:    
+	addi $sp, $sp, -12     
+        sw   $ra, 8($sp)      	
+        sw   $s1, 4($sp)      	
+        sw   $t0, 0($sp)       
+        bne  $t0, 1, end  
+        lw   $t2, 0($s1)      
+        addi $sp, $sp, 12        
+        jr $ra                 
+
+end:   
+	addi $t0, $t0, -1
+	addi $s1, $s1, 4
+        jal   maximum 
+        lw   $ra, 8($sp)      	
+        lw   $s1, 4($sp)      	 
+        lw   $t0, 0($sp)      
+	addi $sp, $sp, 12  
+	lw   $t4, 0($s1)
+	blt $t4, $t5, fact	
+	sub $t5, $t5, $t5
+	add $t5, $zero, $t4
+fact:	jr $ra 
+

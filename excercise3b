@@ -1,0 +1,52 @@
+# a = $a0
+# b = $a1
+# c = $a2
+# d = $a3
+# f = $t0
+# g = $t1 
+.data
+out_string: .asciiz "\nPlease enter an integer: \n"
+out_put: .asciiz  "\n Result of g: \n"
+.text 
+main:
+# in ra câu "Please enter an integer"
+li $v0,4
+la $a0, out_string
+syscall 
+# nh?p vào giá tr? c?a $S0 (a)
+li $v0, 5
+syscall 
+add $s0, $0, $v0
+# nh?p vào giá tr? c?a $S1 (b)
+li $v0, 5
+syscall 
+add $s1, $0, $v0
+# nh?p vào giá tr? c?a $S2 (c)
+li $v0, 5
+syscall 
+add $s2, $0, $v0
+# nh?p vào giá tr? c?a $S3 (d)
+li $v0, 5
+syscall 
+add $s3, $0, $v0
+
+#$t0 = (a+b)*3
+add $t0, $s0, $s1
+#add $t0,$t0,$t0
+#add $t0,$t0,$t0
+mul $t0,$t0,3 
+#$t1 = (c+d)*2
+add $t1,$s2,$s3
+mul $t1,$t1,2
+#add $t1,$t1,$t1
+#$t2 = $t0 - $t1
+sub $t2, $t0,$t1
+
+# in ch? " results"
+li $v0,4
+la $a0, out_put
+syscall
+# in ra k?t qu?
+add $a0, $t2, $0
+li $v0,1
+syscall

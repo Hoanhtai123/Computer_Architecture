@@ -1,0 +1,16 @@
+.data
+out_string: .ascii "\n result: \n"
+list: .word 2, 3, 5, 7, 11, 13, 17, 19, 23, 29
+size: .word 10
+.text:
+
+initial:
+	lw $s3,size
+	la $s1,list
+	addi $s0,$s0,40
+	subi $s2, $s3, 1
+	jal sum
+	
+sum:
+	
+	

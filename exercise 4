@@ -1,0 +1,49 @@
+.data
+out_string: .asciiz "\nPlease enter an integer: \n"
+out_put: .asciiz  "\n Result of f: \n"
+.text 
+main:
+# in ra câu "Please enter an integer"
+li $v0,4
+la $a0, out_string
+syscall 
+# nh?p vào giá tr? c?a $S0 (a)
+li $v0, 5
+syscall 
+add $s0, $0, $v0
+# nh?p vào giá tr? c?a $S1 (b)
+li $v0, 5
+syscall 
+add $s1, $0, $v0
+# nh?p vào giá tr? c?a $S2 (c)
+li $v0, 5
+syscall 
+add $s2, $0, $v0
+# nh?p vào giá tr? c?a $S3 (d)
+li $v0, 5
+syscall 
+add $s3, $0, $v0
+
+li $v0, 5
+syscall 
+add $s4, $0, $v0
+
+add $a0, $s4, $0
+li $v0,1
+syscall
+
+add $a0, $s3, $0
+li $v0,1
+syscall
+
+add $a0, $s2, $0
+li $v0,1
+syscall
+
+add $a0, $s1, $0
+li $v0,1
+syscall
+
+add $a0, $s0, $0
+li $v0,1
+syscall
